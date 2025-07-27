@@ -1,0 +1,214 @@
+# ===================================
+# E-Commerce Microservices .gitignore
+# ===================================
+
+# === Java Specific ===
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+
+# === Log Files ===
+*.log
+*.log.*
+/logs/
+**/logs/
+
+# === Spring Boot Specific ===
+target/
+bin/
+out/
+build/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# === Maven ===
+.mvn/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
+
+# === Gradle ===
+.gradle/
+gradle-app.setting
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/gradle/
+!**/src/test/**/gradle/
+
+# === IDEs ===
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+.idea_modules/
+atlassian-ide-plugin.xml
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Eclipse
+.project
+.classpath
+.c9/
+.settings/
+.springBeans
+.sts4-cache
+.apt_generated
+.apt_generated_test
+.factorypath
+.buildpath
+.target
+.recommenders
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# === OS Specific ===
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Icon?
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# === Docker & Container ===
+*.env
+.env
+.env.local
+.env.*.local
+docker-compose.override.yml
+**/docker/**/build/
+.dockerignore
+docker-compose.*.yml
+!docker-compose.yml
+
+# === Database ===
+*.db
+*.sqlite
+*.sqlite3
+*.h2.db
+*.mv.db
+*.trace.db
+*.lck
+*.ldb
+data/
+mongo-data/
+**/data/
+
+# === Kafka & Message Brokers ===
+*.avro
+*.parquet
+kafka-logs/
+zookeeper/
+**/kafka-data/
+**/zookeeper-data/
+
+# === Test Reports & Coverage ===
+*.exec
+*.ec
+jacoco-report/
+jacoco.exec
+coverage/
+test-results/
+allure-results/
+surefire-reports/
+failsafe-reports/
+
+# === Temporary Files ===
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+*.orig
+*.rej
+*.patch
+
+# === Security & Secrets ===
+secrets/
+*.pem
+*.key
+*.crt
+*.p12
+*.jks
+application-secrets.yml
+application-secrets.properties
+
+# === Node.js (if frontend exists) ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+.npm
+.eslintcache
+
+# === Zencoder specific (AI assistant files) ===
+.zencoder/
+**/Zencoder-*.log
+
+# === Spring Boot DevTools ===
+spring-boot-devtools.properties
+
+# === Monitoring & Profiling ===
+*.hprof
+*.prof
+*.profraw
+hs_err_pid*.log
+
+
