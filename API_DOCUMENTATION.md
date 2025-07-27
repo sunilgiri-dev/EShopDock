@@ -552,8 +552,7 @@ curl -X POST http://localhost:8080/api/v1/auth/users/create \
 ### Performance Considerations
 - Each service has resource limits in Docker
 - MongoDB has connection pooling
-- Kafka is available for event-driven communication
-- Consider implementing circuit breakers for production
+
 
 ---
 
@@ -704,18 +703,3 @@ docker-compose logs -f api-gateway
 docker-compose top
 ```
 
-### Production Considerations
-
-#### For Production Deployment:
-1. **Use External Configuration**: Environment-specific configs
-2. **Health Checks**: Implement comprehensive health checks
-3. **Monitoring**: Use APM tools like Micrometer, Prometheus
-4. **Logging**: Centralized logging with ELK stack
-5. **Security**: Use proper secrets management
-6. **Scaling**: Configure auto-scaling policies
-
-#### Performance Optimization:
-- Increase JVM heap size if needed
-- Configure connection pools
-- Implement circuit breakers
-- Use caching where appropriate
