@@ -1,6 +1,7 @@
 package com.itransform.inventoryservice.controller;
 
 import com.itransform.inventoryservice.dto.*;
+
 import com.itransform.inventoryservice.service.InventoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,10 @@ import java.util.List;
 public class InventoryController {
 
     private final InventoryService inventoryService;
+
+    public InventoryController(InventoryService inventoryService) {
+        this.inventoryService = inventoryService;
+    }
 
     @PostMapping
     public ResponseEntity<InventoryResponse> addInventory(@Valid @RequestBody InventoryRequest request) {

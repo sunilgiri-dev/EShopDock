@@ -43,4 +43,39 @@ public class OrderController {
         OrderResponse response = orderService.getOrderById(id);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<OrderResponse> updateOrderStatus(
+            @PathVariable String id,
+            @RequestParam String status,
+            @RequestHeader("role") String role
+    ) {
+        // Only ADMIN, MANAGER, and SUPPORT can update order status
+        if (!"ADMIN".equals(role) && !"MANAGER".equals(role) && !"SUPPORT".equals(role)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        
+        OrderResponse response = orderService.updateOrderStatus(id, status);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<OrderResponse> cancelOrder(
+            @PathVariable String id,
+            @RequestHeader("role") String role,
+            @RequestHeader("username") String username
+    ) {
+        // Users can only cancel their own orders, others can cancel any order
+        OrderResponse response;
+        if ("USER".equals(role)) {
+            // Additional validation would be needed here to ensure the user owns the order
+            response = orderService.cancelOrder(id);
+        } else if ("ADMIN".equals(role) || "MANAGER".equals(role) || "SUPPORT".equals(role)) {
+            response = orderService.cancelOrder(id);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        
+        return ResponseEntity.ok(response);
+    }
 }

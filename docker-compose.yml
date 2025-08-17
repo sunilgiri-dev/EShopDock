@@ -76,6 +76,8 @@ services:
         condition: service_healthy
       discovery-server:
         condition: service_healthy
+      kafka:
+        condition: service_started
     healthcheck:
       test: ["CMD", "sh", "-c", "ps aux | grep java || exit 1"]
       interval: 10s
@@ -97,6 +99,8 @@ services:
         condition: service_healthy
       discovery-server:
         condition: service_healthy
+      kafka:
+        condition: service_started
     healthcheck:
       test: ["CMD", "sh", "-c", "ps aux | grep java || exit 1"]
       interval: 10s
@@ -118,6 +122,8 @@ services:
         condition: service_healthy
       discovery-server:
         condition: service_healthy
+      kafka:
+        condition: service_started
     healthcheck:
       test: ["CMD", "sh", "-c", "ps aux | grep java || exit 1"]
       interval: 10s
@@ -139,6 +145,8 @@ services:
         condition: service_healthy
       discovery-server:
         condition: service_healthy
+      kafka:
+        condition: service_started
     healthcheck:
       test: ["CMD", "sh", "-c", "ps aux | grep java || exit 1"]
       interval: 10s
@@ -160,22 +168,65 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
-  # Kafka Broker (modern version)
+  # Kafka Broker (compatible version)
   kafka:
-    image: bitnami/kafka:latest
+    image: bitnami/kafka:3.4
     container_name: kafka
     ports:
       - "9092:9092"
     environment:
-      - KAFKA_KRAFT_MODE=false
-      - KAFKA_CFG_BROKER_ID=1
+      - KAFKA_ENABLE_KRAFT=no
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
       - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_BROKER_ID=1
     depends_on:
       - zookeeper
+    healthcheck:
+      test: ["CMD", "kafka-topics.sh", "--bootstrap-server", "kafka:9092", "--list"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Kafka Topic Initializer
+  kafka-init:
+    image: bitnami/kafka:3.4
+    container_name: kafka-init
+    depends_on:
+      kafka:
+        condition: service_healthy
+    volumes:
+      - ./init-kafka-topics.sh:/tmp/init-kafka-topics.sh:ro
+    command: |
+      bash -c "
+        echo 'Waiting for Kafka to be ready...'
+        sleep 30
+        echo 'Creating Kafka topics...'
+        
+        # Order topics
+        kafka-topics.sh --create --topic order-created --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1 --if-not-exists
+        kafka-topics.sh --create --topic order-updated --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1 --if-not-exists
+        kafka-topics.sh --create --topic order-cancelled --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1 --if-not-exists
+        kafka-topics.sh --create --topic order-completed --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1 --if-not-exists
+        
+        # Product topics
+        kafka-topics.sh --create --topic product-created --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1 --if-not-exists
+        kafka-topics.sh --create --topic product-updated --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1 --if-not-exists
+        kafka-topics.sh --create --topic product-deleted --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1 --if-not-exists
+        
+        # Inventory topics
+        kafka-topics.sh --create --topic inventory-updated --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1 --if-not-exists
+        kafka-topics.sh --create --topic inventory-low-stock --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1 --if-not-exists
+        kafka-topics.sh --create --topic inventory-out-of-stock --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1 --if-not-exists
+        kafka-topics.sh --create --topic inventory-restocked --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1 --if-not-exists
+        
+        echo 'Kafka topics created successfully!'
+        kafka-topics.sh --list --bootstrap-server kafka:9092
+      "
+    restart: "no"
 
 
 volumes:
