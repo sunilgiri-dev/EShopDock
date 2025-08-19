@@ -11,7 +11,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.itransform</groupId>
+    <groupId>com.learn</groupId>
     <artifactId>micro-services</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>

@@ -26,7 +26,7 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
         spring.json.use.type.info.headers: false
-        spring.json.value.default.type: com.itransform.inventoryservice.events.OrderEvent
+        spring.json.value.default.type: com.learn.inventoryservice.events.OrderEvent
 
 eureka:
   client:

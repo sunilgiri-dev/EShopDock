@@ -26,7 +26,7 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
         spring.json.use.type.info.headers: false
-        spring.json.value.default.type: com.itransform.productservice.events.OrderEvent
+        spring.json.value.default.type: events.com.learn.productservice.OrderEvent
 
 eureka:
   client:
@@ -51,5 +51,5 @@ logging:
   level:
     org.springframework.kafka: DEBUG
     org.apache.kafka: INFO
-    com.itransform.productservice.service: DEBUG
-    com.itransform.productservice: DEBUG
+    com.learn.productservice.service: DEBUG
+    com.learn.productservice: DEBUG
